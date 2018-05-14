@@ -24,10 +24,6 @@
         {
           "name": "SERVICESTACK_LICENSE",
           "value": "${SERVICESTACK_LICENSE}"
-        },
-        {
-          "name": "TheWorld_HOST",
-          "value": "${IMAGE_NAME}-theworld"
         }
       ]
     }
