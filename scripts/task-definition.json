@@ -30,13 +30,6 @@
           "value": "${IMAGE_NAME}-theworld"
         }
       ]
-    },
-    {
-      "name": "${IMAGE_NAME}-theworld",
-      "image": "theworld:3.2",
-      "cpu": 128,
-      "memory": 128,
-      "essential": true
     }
   ]
 }
