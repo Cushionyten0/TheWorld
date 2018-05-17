@@ -1,3 +1,3 @@
-Sample ASP.NET Project
+[![Build Status](https://travis-ci.com/Cushionyten0/TheWorld.svg?branch=master)](https://travis-ci.com/Cushionyten0/TheWorld)
 
-Testing if everything works
+Sample ASP.NET Project
