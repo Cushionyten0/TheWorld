@@ -11,12 +11,25 @@ namespace src {
     public class Startup {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices (IServiceCollection services) { }
+        public void ConfigureServices (IServiceCollection services) {
+            services.AddMvc ();
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure (IApplicationBuilder app, IHostingEnvironment env) {
-            app.UseDefaultFiles (); //Feeds index.html into UseStaticFiles call
+            if (env.IsEnvironment ("Development")) {
+                app.UseDeveloperExceptionPage ();
+            }
+            //app.UseDefaultFiles (); //Feeds index.html into UseStaticFiles call
             app.UseStaticFiles (); //These two don't work in reverse
+
+            app.UseMvc (config => {
+                config.MapRoute (
+                    name: "Default",
+                    template: "{controller}/{action}/{id?}", //id? doesn't have to exist 
+                    defaults : new { controller = "App", action = "Index" } //action = "Index"; to specify which method 
+                );
+            });
         }
     }
 }
