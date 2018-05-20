@@ -28,7 +28,7 @@ namespace src {
         public void ConfigureServices (IServiceCollection services) {
             services.AddSingleton (_config);
 
-            if (_env.IsEnvironment ("Development") || _env.IsEnvironment ("Testing")) {
+            if (_env.IsEnvironment ("Development") || _env.IsEnvironment ("Testing") || _env.IsEnvironment ("Production")) {
                 services.AddScoped<IMailService, DebugMailService> ();
             } else {
                 //Implement a real Mail Service
