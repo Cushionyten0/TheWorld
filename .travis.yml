@@ -4,10 +4,7 @@ dist: trusty
 sudo: required
 dotnet: 2.0.0
 mono: none
-env: 
-  global:
-    - DOTNETCORE=1
-    - ASPNETCORE_ENVIRONMENT=Development
+env: DOTNETCORE=1
 services:
   - docker
 addons:
