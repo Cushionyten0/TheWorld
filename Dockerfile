@@ -12,5 +12,5 @@ FROM microsoft/aspnetcore:2.0
 WORKDIR /app
 COPY --from=build-env /app/TheWorld/out .
 ENV ASPNETCORE_URLS http://*:5000
-# ENV ASPNETCORE_ENVIRONMENT Development
+ENV ASPNETCORE_ENVIRONMENT Testing
 ENTRYPOINT ["dotnet", "TheWorld.dll"]
