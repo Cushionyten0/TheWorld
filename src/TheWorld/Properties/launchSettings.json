@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "Dev": {
+    "Development": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "http://localhost:5000",
@@ -16,10 +16,20 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    "Remote": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Remote"
+      }
+    },
     "Production": {
       "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Production"
       }
     }
   }
