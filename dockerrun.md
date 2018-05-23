@@ -9,7 +9,9 @@ docker rmi $(docker images -a -q)
 
 Command Palette >Bower>Bower Install
 
-To run with Development on local machine: ASPNETCORE_ENVIRONMENT=Development dotnet run -p src/TheWorld
+To run with Development on local machine:
+----Using no profiles: ASPNETCORE_ENVIRONMENT=Development dotnet run -p src/TheWorld
+----Or Using profiles:dotnet run -p src/TheWorld --launch-profile "Dev"
 
 For wrapping html: option+w
 For autocomplete of css use: control+space
