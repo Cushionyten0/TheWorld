@@ -14,4 +14,6 @@ COPY --from=build-env /app/TheWorld/out .
 ENV ASPNETCORE_URLS http://*:5000
 # Options: Production, Testing or Development on localmachine
 # ENV ASPNETCORE_ENVIRONMENT Testing
+ARG ASPNETCORE_ENVIRONMENT
+ENV ASPNETCORE_ENVIRONMENT ${ASPNETCORE_ENVIRONMENT}
 ENTRYPOINT ["dotnet", "TheWorld.dll"]
