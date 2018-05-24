@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -52,7 +53,17 @@ namespace src {
             //app.UseDefaultFiles (); //Feeds index.html into UseStaticFiles call
             app.UseStaticFiles (); //These two don't work in reverse
 
-            SampleData.InitializeWorldContext (app.ApplicationServices);
+            try {
+                using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory> ()
+                    .CreateScope ()) {
+
+                    serviceScope.ServiceProvider.GetService<WorldContext> ()
+                        .Database.EnsureCreated ();
+                }
+            } catch (Exception e) {
+                var msg = e.Message;
+                var stacktrace = e.StackTrace;
+            }
 
             app.UseMvc (config => {
                 config.MapRoute (

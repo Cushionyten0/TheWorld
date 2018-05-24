@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace TheWorld.Models {
     public static class SampleData {
-        public static void InitializeWorldContext (IServiceProvider serviceProvider) {
+        public static async Task InitializeWorldContext (IServiceProvider serviceProvider) {
             var db = serviceProvider.GetService<WorldContext> ();
-            db.Database.EnsureCreatedAsync ();
+            await db.Database.EnsureCreatedAsync ();
         }
     }
 }

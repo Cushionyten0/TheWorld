@@ -18,7 +18,7 @@ namespace TheWorld.Controllers.Web {
 
         //private IMailService _mailService;
 
-        public AppController (IMailService mailService, IConfigurationRoot config, WorldContext context) {
+        public AppController (IMailService mailService, IConfigurationRoot config, [FromServices] WorldContext context) {
             _mailService = mailService;
             _config = config;
             _context = context;
