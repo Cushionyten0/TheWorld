@@ -1,4 +1,4 @@
-docker build -t theworld .
+docker build -t theworld . --build-arg ASPNETCORE_ENVIRONMENT=Development
 docker run -d -p 5000:5000 theworld
 
 docker ps -a

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using TheWorld.Models;
 using TheWorld.Services;
 
 namespace src {
@@ -34,6 +36,10 @@ namespace src {
             } else {
                 //Implement a real Mail Service
             }
+            services.AddDbContext<WorldContext> ();
+            //services.AddTransient<WorldContextSeedData> ();
+            // _context.Database.Migrate()
+            // Database.EnsureCreated();
 
             services.AddMvc ();
         }
@@ -45,6 +51,8 @@ namespace src {
             }
             //app.UseDefaultFiles (); //Feeds index.html into UseStaticFiles call
             app.UseStaticFiles (); //These two don't work in reverse
+
+            SampleData.InitializeWorldContext (app.ApplicationServices);
 
             app.UseMvc (config => {
                 config.MapRoute (
