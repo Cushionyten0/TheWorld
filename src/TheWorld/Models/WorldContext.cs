@@ -25,7 +25,7 @@ namespace TheWorld.Models {
             if (_env.IsEnvironment ("Development")) {
                 optionsBuilder.UseMySql (_config["ConnectionString:RemoteContextConnection"]);
             } else if (_env.IsEnvironment ("Testing") || _env.IsEnvironment ("Production")) {
-                optionsBuilder.UseMySql (Environment.GetEnvironmentVariable ("AWS_DATABASE"));
+                optionsBuilder.UseMySql (Helpers.GetRDSConnectionString ());
             }
         }
     }

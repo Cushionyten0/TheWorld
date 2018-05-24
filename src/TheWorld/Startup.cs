@@ -58,7 +58,7 @@ namespace src {
                     .CreateScope ()) {
 
                     serviceScope.ServiceProvider.GetService<WorldContext> ()
-                        .Database.Migrate ();
+                        .Database.EnsureCreated ();
                 }
             } catch (Exception e) {
                 var msg = e.Message;

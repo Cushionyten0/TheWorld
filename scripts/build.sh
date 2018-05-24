@@ -5,5 +5,11 @@ source ../deploy-envs.sh
 export AWS_ECS_REPO_DOMAIN=$AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
 
 # Build process
-docker build -t $IMAGE_NAME ../ --build-arg AWS_DATABASE=$AWS_DATABASE --build-arg ASPNETCORE_ENVIRONMENT="$ASPNETCORE_ENVIRONMENT"
+docker build -t $IMAGE_NAME ../ \
+    --build-arg ASPNETCORE_ENVIRONMENT="$ASPNETCORE_ENVIRONMENT" \
+    --build-arg RDS_DB_NAME="$RDS_DB_NAME" \
+    --build-arg RDS_USERNAME="$RDS_USERNAME" \
+    --build-arg RDS_PASSWORD="$RDS_PASSWORD" \
+    --build-arg RDS_HOSTNAME="$RDS_HOSTNAME" \
+    --build-arg RDS_PORT="$RDS_PORT"
 docker tag $IMAGE_NAME $AWS_ECS_REPO_DOMAIN/$IMAGE_NAME:$IMAGE_VERSION
