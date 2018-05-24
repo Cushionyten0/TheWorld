@@ -6,6 +6,7 @@ docker ps -a
 docker kill $(docker ps -q)
 docker rm $(docker ps -a -q)
 docker rmi $(docker images -a -q)
+docker rm $(docker ps -q -f status=exited)
 
 Command Palette >Bower>Bower Install
 
