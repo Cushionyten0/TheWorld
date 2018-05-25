@@ -38,6 +38,9 @@ namespace src {
                 //Implement a real Mail Service
             }
             services.AddDbContext<WorldContext> ();
+            services.AddScoped<IWorldRepository, WorldRepository> ();
+            services.AddTransient<WorldContextSeedData> ();
+
             //services.AddTransient<WorldContextSeedData> ();
             // _context.Database.Migrate()
             // Database.EnsureCreated();
@@ -46,7 +49,9 @@ namespace src {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure (IApplicationBuilder app, IHostingEnvironment env) {
+        public void Configure (IApplicationBuilder app,
+            IHostingEnvironment env,
+            WorldContextSeedData seeder) {
             if (env.IsEnvironment ("Development") || env.IsEnvironment ("Remote") || env.IsEnvironment ("Testing")) {
                 app.UseDeveloperExceptionPage ();
             }
@@ -72,6 +77,8 @@ namespace src {
                     defaults : new { controller = "App", action = "Index" } //action = "Index"; to specify which method 
                 );
             });
+
+            seeder.EnsureSeedData ().Wait ();
         }
     }
 }
