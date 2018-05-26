@@ -45,15 +45,21 @@ namespace src {
             // _context.Database.Migrate()
             // Database.EnsureCreated();
 
+            services.AddLogging ();
+
             services.AddMvc ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure (IApplicationBuilder app,
             IHostingEnvironment env,
-            WorldContextSeedData seeder) {
+            WorldContextSeedData seeder,
+            ILoggerFactory factory) {
             if (env.IsEnvironment ("Development") || env.IsEnvironment ("Remote") || env.IsEnvironment ("Testing")) {
                 app.UseDeveloperExceptionPage ();
+                factory.AddDebug (LogLevel.Information);
+            } else {
+                factory.AddDebug (LogLevel.Error);
             }
             //app.UseDefaultFiles (); //Feeds index.html into UseStaticFiles call
             app.UseStaticFiles (); //These two don't work in reverse
