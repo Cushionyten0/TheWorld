@@ -1,5 +1,9 @@
 {
   "MailSettings": {
     "To Address": "somebody@someone.com"
+  },
+  "ConnectionString": {
+    "WorldContextConnection":
+      "Server=localhost;Initial Catalog=TheWorld;User Id=root;Password=root;"
   }
 }
