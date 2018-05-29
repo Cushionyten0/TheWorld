@@ -22,11 +22,11 @@ namespace TheWorld.Models {
 
         protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder) {
             base.OnConfiguring (optionsBuilder);
-            if (_env.IsEnvironment ("Development")) {
+            if (_env.IsEnvironment ("RemoteDev") || _env.IsEnvironment ("Remote")) {
                 optionsBuilder.UseMySql (_config["ConnectionString:RemoteContextConnection"]);
             } else if (_env.IsEnvironment ("Testing") || _env.IsEnvironment ("Production")) {
                 optionsBuilder.UseMySql (Helpers.GetRDSConnectionString ());
-            } else if (_env.IsEnvironment ("LocalDBTesting")) {
+            } else if (_env.IsEnvironment ("Development") || _env.IsEnvironment ("Local")) {
                 optionsBuilder.UseMySql (_config["ConnectionString:WorldContextConnection"]);
             }
         }

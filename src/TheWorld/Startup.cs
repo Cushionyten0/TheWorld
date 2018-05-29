@@ -32,8 +32,8 @@ namespace src {
         public void ConfigureServices (IServiceCollection services) {
             services.AddSingleton (_config);
 
-            if (_env.IsEnvironment ("Development") || _env.IsEnvironment ("Remote") ||
-                _env.IsEnvironment ("Testing") || _env.IsEnvironment ("LocalDBTesting")) {
+            if (_env.IsEnvironment ("Development") || _env.IsEnvironment ("Testing") ||
+                _env.IsEnvironment ("RemoteDev")) {
                 services.AddScoped<IMailService, DebugMailService> ();
             } else {
                 //Implement a real Mail Service
@@ -56,9 +56,8 @@ namespace src {
             IHostingEnvironment env,
             WorldContextSeedData seeder,
             ILoggerFactory factory) {
-            if (env.IsEnvironment ("Development") || env.IsEnvironment ("Remote") ||
-                env.IsEnvironment ("Testing") || env.IsEnvironment ("LocalDBTesting")
-            ) {
+            if (env.IsEnvironment ("Development") || env.IsEnvironment ("Testing") ||
+                env.IsEnvironment ("RemoteDev")) {
                 app.UseDeveloperExceptionPage ();
                 factory.AddDebug (LogLevel.Information);
             } else {

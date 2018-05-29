@@ -18,6 +18,8 @@ For wrapping html: option+w
 For autocomplete of css use: control+space
 
 env="Development": "config.json" -- for working with local db with ExceptionPage
-env="Remote": "secrets.json" -- for working with remote db with ExceptionPage
+env="RemoteDev": "secrets.json" -- for working with local db with ExceptionPage
+env="Local": "config.json" -- for working with local db with no ExceptionPage
+env="Remote": "secrets.json" -- for working with remote db with no ExceptionPage
 env="Testing": "RDS as parameter" -- remotedb with ExceptionPage
 env="Production": "RDS as parameter" -- remotedb and no Exception Page

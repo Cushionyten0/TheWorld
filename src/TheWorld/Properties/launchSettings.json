@@ -32,12 +32,20 @@
         "ASPNETCORE_ENVIRONMENT": "Production"
       }
     },
-    "LocalDBTesting": {
+    "RemoteDev": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "LocalDBTesting"
+        "ASPNETCORE_ENVIRONMENT": "RemoteDev"
+      }
+    },
+    "Local": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Local"
       }
     }
   }
