@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TheWorld.Models {
-    public interface IWorldRepository {
+namespace TheWorld.Models
+{
+    public interface IWorldRepository
+    {
         IEnumerable<Trip> GetAllTrips ();
     }
 }

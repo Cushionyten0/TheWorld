@@ -7,12 +7,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace TheWorld.Models {
-    public class WorldContext : DbContext {
+namespace TheWorld.Models
+{
+    public class WorldContext : DbContext
+    {
         private IConfigurationRoot _config;
         private IHostingEnvironment _env;
 
-        public WorldContext (IConfigurationRoot config, IHostingEnvironment env, DbContextOptions options) : base (options) {
+        public WorldContext (IConfigurationRoot config, IHostingEnvironment env, DbContextOptions options) : base (options)
+        {
             _config = config;
             _env = env;
         }
@@ -20,13 +23,19 @@ namespace TheWorld.Models {
         public DbSet<Trip> Trips { get; set; }
         public DbSet<Stop> Stops { get; set; }
 
-        protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder) {
+        protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder)
+        {
             base.OnConfiguring (optionsBuilder);
-            if (_env.IsEnvironment ("RemoteDev") || _env.IsEnvironment ("Remote")) {
+            if (_env.IsEnvironment ("RemoteDev") || _env.IsEnvironment ("Remote"))
+            {
                 optionsBuilder.UseMySql (_config["ConnectionString:RemoteContextConnection"]);
-            } else if (_env.IsEnvironment ("Testing") || _env.IsEnvironment ("Production")) {
+            }
+            else if (_env.IsEnvironment ("Testing") || _env.IsEnvironment ("Production"))
+            {
                 optionsBuilder.UseMySql (Helpers.GetRDSConnectionString ());
-            } else if (_env.IsEnvironment ("Development") || _env.IsEnvironment ("Local")) {
+            }
+            else if (_env.IsEnvironment ("Development") || _env.IsEnvironment ("Local"))
+            {
                 optionsBuilder.UseMySql (_config["ConnectionString:WorldContextConnection"]);
             }
         }

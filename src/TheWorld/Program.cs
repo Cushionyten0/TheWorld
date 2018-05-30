@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace src {
-    public class Program {
-        public static void Main (string[] args) {
+namespace src
+{
+    public class Program
+    {
+        public static void Main (string[] args)
+        {
             BuildWebHost (args).Run ();
         }
 

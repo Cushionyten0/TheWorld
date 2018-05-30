@@ -4,9 +4,12 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 
-namespace TheWorld.Models {
-    public class Helpers {
-        public static string GetRDSConnectionString () {
+namespace TheWorld.Models
+{
+    public class Helpers
+    {
+        public static string GetRDSConnectionString ()
+        {
 
             string dbname = Environment.GetEnvironmentVariable ("RDS_DB_NAME");
 
