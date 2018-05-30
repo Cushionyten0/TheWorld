@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TheWorld.Models;
+using TheWorld.ViewModels;
 
 namespace TheWorld.Controllers.Api
 {
+    [Route ("api/trips")]
     public class TripsController : Controller
     {
         private IWorldRepository _repository;
@@ -17,10 +19,20 @@ namespace TheWorld.Controllers.Api
             _repository = repository;
         }
 
-        [HttpGet ("api/trips")]
+        [HttpGet ("")]
         public IActionResult Get ()
         {
             return Ok (_repository.GetAllTrips ());
+        }
+
+        [HttpPost ("")]
+        public IActionResult Post ([FromBody] TripViewModel theTrip)
+        {
+            if (ModelState.IsValid)
+            {
+                return Created ($"api/trips/{theTrip.Name}", theTrip);
+            }
+            return BadRequest (ModelState);
         }
     }
 }

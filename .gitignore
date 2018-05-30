@@ -253,3 +253,4 @@ paket-files/
 
 # Database information
 secrets.json
+demo.http

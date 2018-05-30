@@ -1,0 +1,18 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TheWorld.Models;
+
+namespace TheWorld.ViewModels
+{
+    public class TripViewModel
+    {
+        [Required]
+        [StringLength (100, MinimumLength = 5)]
+        public String Name { get; set; }
+        public DateTime Created { get; set; } = DateTime.UtcNow;
+    }
+}
