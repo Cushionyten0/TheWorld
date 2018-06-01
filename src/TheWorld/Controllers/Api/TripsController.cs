@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using TheWorld.Models;
 using TheWorld.ViewModels;
 
@@ -14,10 +15,12 @@ namespace TheWorld.Controllers.Api
     public class TripsController : Controller
     {
         private IWorldRepository _repository;
+        private ILogger<TripsController> _logger;
 
-        public TripsController (IWorldRepository repository)
+        public TripsController (IWorldRepository repository, ILogger<TripsController> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         [HttpGet ("")]
@@ -33,6 +36,7 @@ namespace TheWorld.Controllers.Api
             catch (Exception e)
             {
                 // TODO Logging
+                _logger.LogError ($"Failed to get All Trips: {e}");
                 return BadRequest ("Error Occured");
             }
         }
