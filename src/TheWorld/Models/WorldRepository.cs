@@ -50,7 +50,9 @@ namespace TheWorld.Models
             {
                 trip.Stops.Add (newStop); //foreign keys are set
                 _context.Stops.Add (newStop); //adds the item to the database
+
             }
         }
+
     }
 }
