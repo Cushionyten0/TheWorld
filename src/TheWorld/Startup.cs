@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,6 +49,16 @@ namespace src
             {
                 //Implement a real Mail Service
             }
+
+            services.AddIdentity<WorldUser, IdentityRole> (config =>
+            {
+                config.User.RequireUniqueEmail = true;
+                config.Password.RequiredLength = 8;
+            }).AddEntityFrameworkStores<WorldContext> ();
+            services.ConfigureApplicationCookie (options => options.LoginPath = "/Auth/Login");
+
+            services.AddLogging ();
+
             services.AddDbContext<WorldContext> ();
             services.AddScoped<IWorldRepository, WorldRepository> ();
             services.AddTransient<GeoCoordsService> ();
@@ -56,8 +67,6 @@ namespace src
             //services.AddTransient<WorldContextSeedData> ();
             // _context.Database.Migrate()
             // Database.EnsureCreated();
-
-            services.AddLogging ();
 
             services.AddMvc ()
                 .AddJsonOptions (config =>
@@ -72,6 +81,11 @@ namespace src
             WorldContextSeedData seeder,
             ILoggerFactory factory)
         {
+            //app.UseDefaultFiles (); //Feeds index.html into UseStaticFiles call
+            app.UseStaticFiles (); //These two don't work in reverse
+
+            app.UseIdentity ();
+
             Mapper.Initialize (config =>
             {
                 config.CreateMap<TripViewModel, Trip> ().ReverseMap ();
@@ -88,8 +102,6 @@ namespace src
             {
                 factory.AddDebug (LogLevel.Error);
             }
-            //app.UseDefaultFiles (); //Feeds index.html into UseStaticFiles call
-            app.UseStaticFiles (); //These two don't work in reverse
 
             try
             {
