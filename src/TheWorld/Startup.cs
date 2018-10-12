@@ -43,10 +43,12 @@ namespace src
             services.AddMvc (config =>
                 {
                     //If you attempt to go to HTTP it will redirect to HTTPS
+                    /*
                     if (_env.IsProduction ())
                     {
                         config.Filters.Add (new RequireHttpsAttribute ());
                     }
+                    */
                 })
                 .AddJsonOptions (opt =>
                 {
