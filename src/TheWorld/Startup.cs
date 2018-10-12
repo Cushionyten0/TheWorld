@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +39,20 @@ namespace src
 
         public void ConfigureServices (IServiceCollection services)
         {
+
+            services.AddMvc (config =>
+                {
+                    //If you attempt to go to HTTP it will redirect to HTTPS
+                    if (_env.IsProduction ())
+                    {
+                        config.Filters.Add (new RequireHttpsAttribute ());
+                    }
+                })
+                .AddJsonOptions (opt =>
+                {
+                    opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver ();
+                });
+
             services.AddSingleton (_config);
 
             if (_env.IsEnvironment ("Development") || _env.IsEnvironment ("Testing") ||
@@ -67,12 +82,6 @@ namespace src
             //services.AddTransient<WorldContextSeedData> ();
             // _context.Database.Migrate()
             // Database.EnsureCreated();
-
-            services.AddMvc ()
-                .AddJsonOptions (config =>
-                {
-                    config.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver ();
-                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
