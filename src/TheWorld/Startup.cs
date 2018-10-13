@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -73,6 +74,22 @@ namespace src
                 config.Password.RequiredLength = 8;
             }).AddEntityFrameworkStores<WorldContext> ();
             services.ConfigureApplicationCookie (options => options.LoginPath = "/Auth/Login");
+            services.ConfigureApplicationCookie (options => options.Events = new CookieAuthenticationEvents
+            {
+                OnRedirectToLogin = async ctx =>
+                {
+                    if (ctx.Request.Path.StartsWithSegments ("/api") &&
+                        ctx.Response.StatusCode == 200)
+                    {
+                        ctx.Response.StatusCode = 401;
+                    }
+                    else
+                    {
+                        ctx.Response.Redirect (ctx.RedirectUri);
+                    }
+                    await Task.Yield ();
+                }
+            });
 
             services.AddLogging ();
 
