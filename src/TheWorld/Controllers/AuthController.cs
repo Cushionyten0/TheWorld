@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TheWorld.Models;
 using TheWorld.ViewModels;
 
-namespace TheWorld.Controllers
+namespace TheWorld.Controllers.Web
 {
     public class AuthController : Controller
     {
@@ -15,39 +15,32 @@ namespace TheWorld.Controllers
             _signInManager = signInManager;
         }
 
-        public IActionResult Login ()
+        public ActionResult Login ()
         {
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction ("Trips", "App");
             }
-
             return View ();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login (LoginViewModel vm, string returnUrl)
+        public async Task<ActionResult> Login (LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var signInResult = await _signInManager.PasswordSignInAsync (vm.Username, vm.Password, true, false);
-
-                if (signInResult.Succeeded)
+                var signinResult = await _signInManager.PasswordSignInAsync (model.Username,
+                    model.Password,
+                    true, false);
+                if (signinResult.Succeeded)
                 {
-                    if (string.IsNullOrWhiteSpace (returnUrl))
-                    {
-                        return RedirectToAction ("Trips", "App");
-                    }
-                    else
-                    {
-                        return Redirect (returnUrl);
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError ("", "Username or password incorrect");
+                    return RedirectToAction ("Trips", "App");
                 }
             }
+
+            // Just say Login failed on all errors
+            ModelState.AddModelError ("", "Login Failed");
+
             return View ();
         }
 
@@ -59,5 +52,6 @@ namespace TheWorld.Controllers
             }
             return RedirectToAction ("Index", "App");
         }
+
     }
 }

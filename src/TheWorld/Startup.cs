@@ -69,27 +69,58 @@ namespace src
             }
 
             services.AddIdentity<WorldUser, IdentityRole> (config =>
-            {
-                config.User.RequireUniqueEmail = true;
-                config.Password.RequiredLength = 8;
-            }).AddEntityFrameworkStores<WorldContext> ();
-            services.ConfigureApplicationCookie (options => options.LoginPath = "/Auth/Login");
-            services.ConfigureApplicationCookie (options => options.Events = new CookieAuthenticationEvents
-            {
-                OnRedirectToLogin = async ctx =>
                 {
-                    if (ctx.Request.Path.StartsWithSegments ("/api") &&
-                        ctx.Response.StatusCode == 200)
+                    config.User.RequireUniqueEmail = true;
+                    //config.Password.RequiredLength = 8;
+                }).AddEntityFrameworkStores<WorldContext> ()
+                .AddDefaultTokenProviders ();
+
+            services.AddAntiforgery (options => { options.Cookie.Expiration = TimeSpan.Zero; });
+            services.ConfigureApplicationCookie (options =>
+            {
+                options.LoginPath = "/auth/login";
+                options.SlidingExpiration = true;
+                options.Events.OnSigningIn = (context) =>
+                {
+                    context.CookieOptions.Expires = DateTimeOffset.UtcNow.AddDays (30);
+                    return Task.CompletedTask;
+                };
+                options.Events = new CookieAuthenticationEvents
+                {
+                    OnRedirectToLogin = async ctx =>
                     {
-                        ctx.Response.StatusCode = 401;
+                        if (ctx.Request.Path.StartsWithSegments ("/api") &&
+                            ctx.Response.StatusCode == 200)
+                        {
+                            ctx.Response.StatusCode = 401;
+                        }
+                        else
+                        {
+                            ctx.Response.Redirect (ctx.RedirectUri);
+                        }
+                        await Task.Yield ();
                     }
-                    else
-                    {
-                        ctx.Response.Redirect (ctx.RedirectUri);
-                    }
-                    await Task.Yield ();
-                }
+                };
             });
+
+            //services.ConfigureApplicationCookie (options => options.LoginPath = "/auth/login");
+            // services.ConfigureApplicationCookie (options => options.Events = new CookieAuthenticationEvents
+            // {
+
+            //     OnRedirectToLogin = async ctx =>
+            //     {
+            //         if (ctx.Request.Path.StartsWithSegments ("/api") &&
+            //             ctx.Response.StatusCode == 200)
+            //         {
+            //             ctx.Response.StatusCode = 401;
+            //         }
+            //         else
+            //         {
+            //             ctx.Response.Redirect (ctx.RedirectUri);
+            //         }
+            //         await Task.Yield ();
+            //     }
+            // });
 
             services.AddLogging ();
 
@@ -112,7 +143,7 @@ namespace src
             //app.UseDefaultFiles (); //Feeds index.html into UseStaticFiles call
             app.UseStaticFiles (); //These two don't work in reverse
 
-            app.UseIdentity ();
+            //app.UseIdentity (); //Deprecated
 
             Mapper.Initialize (config =>
             {
@@ -146,6 +177,8 @@ namespace src
                 var msg = e.Message;
                 var stacktrace = e.StackTrace;
             }
+
+            app.UseAuthentication ();
 
             app.UseMvc (config =>
             {
