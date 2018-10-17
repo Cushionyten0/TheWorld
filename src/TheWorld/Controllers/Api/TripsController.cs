@@ -30,7 +30,7 @@ namespace TheWorld.Controllers.Api
         {
             try
             {
-                var results = _repository.GetAllTrips ();
+                var results = _repository.GetTripsByUsername (this.User.Identity.Name);
 
                 return Ok (Mapper.Map<IEnumerable<TripViewModel>> (results));
 

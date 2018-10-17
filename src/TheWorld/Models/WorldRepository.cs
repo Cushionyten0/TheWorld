@@ -54,5 +54,14 @@ namespace TheWorld.Models
             }
         }
 
+        public IEnumerable<Trip> GetTripsByUsername (string name)
+        {
+            _logger.LogInformation ("Getting Trips and Stops for {0} from the Database", name);
+            return _context
+                .Trips
+                .Include (t => t.Stops)
+                .Where (t => t.UserName == name)
+                .ToList ();
+        }
     }
 }
