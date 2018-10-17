@@ -41,6 +41,13 @@ namespace src
         public void ConfigureServices (IServiceCollection services)
         {
 
+            services.AddLogging ();
+
+            services.AddDbContext<WorldContext> ();
+            services.AddScoped<IWorldRepository, WorldRepository> ();
+            services.AddTransient<GeoCoordsService> ();
+            services.AddTransient<WorldContextSeedData> ();
+
             services.AddMvc (config =>
                 {
                     //If you attempt to go to HTTP it will redirect to HTTPS
@@ -75,16 +82,12 @@ namespace src
                 }).AddEntityFrameworkStores<WorldContext> ()
                 .AddDefaultTokenProviders ();
 
-            services.AddAntiforgery (options => { options.Cookie.Expiration = TimeSpan.Zero; });
             services.ConfigureApplicationCookie (options =>
             {
                 options.LoginPath = "/auth/login";
+                options.Cookie.HttpOnly = true;
                 options.SlidingExpiration = true;
-                options.Events.OnSigningIn = (context) =>
-                {
-                    context.CookieOptions.Expires = DateTimeOffset.UtcNow.AddDays (30);
-                    return Task.CompletedTask;
-                };
+
                 options.Events = new CookieAuthenticationEvents
                 {
                     OnRedirectToLogin = async ctx =>
@@ -103,35 +106,6 @@ namespace src
                 };
             });
 
-            //services.ConfigureApplicationCookie (options => options.LoginPath = "/auth/login");
-            // services.ConfigureApplicationCookie (options => options.Events = new CookieAuthenticationEvents
-            // {
-
-            //     OnRedirectToLogin = async ctx =>
-            //     {
-            //         if (ctx.Request.Path.StartsWithSegments ("/api") &&
-            //             ctx.Response.StatusCode == 200)
-            //         {
-            //             ctx.Response.StatusCode = 401;
-            //         }
-            //         else
-            //         {
-            //             ctx.Response.Redirect (ctx.RedirectUri);
-            //         }
-            //         await Task.Yield ();
-            //     }
-            // });
-
-            services.AddLogging ();
-
-            services.AddDbContext<WorldContext> ();
-            services.AddScoped<IWorldRepository, WorldRepository> ();
-            services.AddTransient<GeoCoordsService> ();
-            services.AddTransient<WorldContextSeedData> ();
-
-            //services.AddTransient<WorldContextSeedData> ();
-            // _context.Database.Migrate()
-            // Database.EnsureCreated();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -142,8 +116,6 @@ namespace src
         {
             //app.UseDefaultFiles (); //Feeds index.html into UseStaticFiles call
             app.UseStaticFiles (); //These two don't work in reverse
-
-            //app.UseIdentity (); //Deprecated
 
             Mapper.Initialize (config =>
             {

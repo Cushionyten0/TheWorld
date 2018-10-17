@@ -12,8 +12,8 @@ using TheWorld.ViewModels;
 
 namespace TheWorld.Controllers.Api
 {
-    [Route ("/api/trips")]
     [Authorize]
+    [Route ("/api/trips")]
     public class TripsController : Controller
     {
         private IWorldRepository _repository;
@@ -46,17 +46,22 @@ namespace TheWorld.Controllers.Api
         [HttpPost ("")]
         public async Task<IActionResult> Post ([FromBody] TripViewModel theTrip)
         {
-            var newTrip = Mapper.Map<Trip> (theTrip);
-            _repository.AddTrip (newTrip);
-
             if (ModelState.IsValid)
             {
+                // Save to the Database
+                var newTrip = Mapper.Map<Trip> (theTrip);
+
+                newTrip.UserName = User.Identity.Name;
+
+                _repository.AddTrip (newTrip);
+
                 if (await _repository.SaveChangesAsync ())
                 {
                     return Created ($"api/trips/{theTrip.Name}", Mapper.Map<TripViewModel> (newTrip));
                 }
             }
-            return BadRequest ("Failed to save changes to the Database");
+
+            return BadRequest ("Failed to save the trip");
         }
     }
 }
