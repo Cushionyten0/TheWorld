@@ -43,9 +43,9 @@ namespace TheWorld.Models
                 .FirstOrDefault ();
         }
 
-        public void AddStop (string tripName, Stop newStop)
+        public void AddStop (string tripName, Stop newStop, string username)
         {
-            var trip = GetTripByName (tripName);
+            var trip = GetUserTripByName (tripName, username);
             if (trip != null)
             {
                 trip.Stops.Add (newStop); //foreign keys are set
@@ -54,14 +54,22 @@ namespace TheWorld.Models
             }
         }
 
-        public IEnumerable<Trip> GetTripsByUsername (string name)
+        public IEnumerable<Trip> GetTripsByUsername (string username)
         {
-            _logger.LogInformation ("Getting Trips and Stops for {0} from the Database", name);
+            _logger.LogInformation ("Getting Trips and Stops for {0} from the Database", username);
             return _context
                 .Trips
                 .Include (t => t.Stops)
-                .Where (t => t.UserName == name)
+                .Where (t => t.UserName == username)
                 .ToList ();
+        }
+
+        public Trip GetUserTripByName (string tripName, string username)
+        {
+            return _context.Trips
+                .Include (t => t.Stops)
+                .Where (t => t.Name == tripName && t.UserName == username)
+                .FirstOrDefault ();
         }
     }
 }
