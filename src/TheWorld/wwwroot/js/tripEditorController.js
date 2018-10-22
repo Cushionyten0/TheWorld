@@ -10,6 +10,6 @@
   function tripEditorController($routeParams) {
     var vm = this;
 
-    vm.tripname = $routeParams.tripname;
+    vm.tripName = $routeParams.tripName;
   }
 })();
