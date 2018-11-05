@@ -3,6 +3,10 @@
 # WorldTrips
 
 This is a website for planning out your trips/ recording the trips already made
+Live version: [Trip Planner](http://18.191.33.239)
+
+- Username: newuser
+- Password: P@ssw0rd!
 
 ## Prerequisites
 
