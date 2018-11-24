@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
@@ -16,11 +17,13 @@ namespace TheWorld.Services
     {
         private ILogger<GeoCoordsService> _logger;
         private IConfigurationRoot _config;
+        private IHostingEnvironment _env;
 
-        public GeoCoordsService (ILogger<GeoCoordsService> logger, IConfigurationRoot config)
+        public GeoCoordsService (ILogger<GeoCoordsService> logger, IConfigurationRoot config, IHostingEnvironment env)
         {
             _logger = logger;
             _config = config;
+            _env = env;
         }
 
         public async Task<GeoCoordsResult> GetCoordsAsync (string name)
@@ -32,6 +35,12 @@ namespace TheWorld.Services
             };
 
             var apiKey = _config["Keys:BingKey"];
+
+            if (_env.IsEnvironment ("Testing") || _env.IsEnvironment ("Production"))
+            {
+                apiKey = Environment.GetEnvironmentVariable ("BING_KEY");
+            }
+
             var encodedName = WebUtility.UrlEncode (name);
             var url = $"http://dev.virtualearth.net/REST/v1/Locations/?q={encodedName}&key={apiKey}";
 

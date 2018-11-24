@@ -13,10 +13,10 @@ namespace TheWorld.Models
         private WorldContext _context;
         private ILogger<WorldRepository> _logger;
 
-        public WorldRepository (WorldContext context, ILogger<WorldRepository> loggger)
+        public WorldRepository (WorldContext context, ILogger<WorldRepository> logger)
         {
             _context = context;
-            _logger = loggger;
+            _logger = logger;
         }
 
         public IEnumerable<Trip> GetAllTrips ()

@@ -12,4 +12,5 @@ docker build -t $IMAGE_NAME ../ \
     --build-arg RDS_PASSWORD="$RDS_PASSWORD" \
     --build-arg RDS_HOSTNAME="$RDS_HOSTNAME" \
     --build-arg RDS_PORT="$RDS_PORT"
+    --build-arg BING_KEY="$BING_KEY"
 docker tag $IMAGE_NAME $AWS_ECS_REPO_DOMAIN/$IMAGE_NAME:$IMAGE_VERSION
