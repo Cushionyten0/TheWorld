@@ -41,3 +41,5 @@ docker build -t theworld . --build-arg ASPNETCORE_ENVIRONMENT=Development
 AWS Login:
 cd aws
 ssh -i ecs-demo.pem ec2-user@18.191.33.239
+
+Testing changed url
